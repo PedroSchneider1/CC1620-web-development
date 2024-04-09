@@ -1,0 +1,19 @@
+body{
+    background-color: bisque
+}
+
+.central{
+    display: flex;
+    justify-content: center;
+}
+
+#titulo{
+    text-align: center;
+    background-color: whitesmoke;
+    padding: 10px;
+}
+
+#canvas{
+    border: solid 1px black;
+    background-color: whitesmoke;
+}
