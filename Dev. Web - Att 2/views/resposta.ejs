@@ -6,12 +6,18 @@
     <title>Acesso</title>
 </head>
 <body>
-    <h1>Resposta:</h1>
+    <h1>Resposta</h1>
     <p>
-        <%= enter %>
+        <h2><%= enter %></h2>
     </p>
-    <p>
-        Usuário: <%= currentUser %>
-    </p>
+
+    <% if(enter != "Cadastrado com sucesso!"){ %>
+        <p>
+            <b>Usuário</b>: <%= newUser %>
+        </p>
+    <% } %>
+
+    <a href="/projetos/Dev.%20Web%20-%20Att%208%20(Server)/Login.html">Voltar para o login</a>
+    
 </body>
 </html>
