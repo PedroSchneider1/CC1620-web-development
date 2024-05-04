@@ -1,0 +1,29 @@
+body{
+    background-color: lightgray;
+}
+
+#fields{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#button{
+    display: flex;
+    justify-content: center;
+}
+
+#form{
+    display: flex;
+    justify-content: center;
+}
+
+#posts{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-content: space-between;
+    border: solid black 2px;
+    margin: 15px;
+    background-color: whitesmoke;
+}

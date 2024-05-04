@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="projetos/Dev. Web - Att 9 (Blog)/styleBlog.css" rel="stylesheet">
+        <title>Blog</title>
+    </head>
+
+    <body>
+        <div id="form">
+            <form action="/criacao_post" method="GET">
+                <div id="button">
+                    <input type="submit" value="Criar Post">
+                </div>
+            </form>
+        </div>
+
+        <% if (posts && posts.length > 0) { %>
+            <% for (let i = 0; i < posts.length; i++) { %>
+                <div id="posts">
+                    <h1><%= posts[i].db_title %></h1>
+                    <h3><%= posts[i].db_abs %></h3>
+                    <%= posts[i].db_cont %>
+                </div>
+            <% } %>
+        <% } %>
+    </body>
+</html>
