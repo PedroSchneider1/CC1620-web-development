@@ -65,8 +65,7 @@ app.post('/cadastrar_usuario', function(req, res) {
 });
 
 app.post("/logar_usuario", function(req, res) {
-
-    // busca um usuário no banco de dados
+    // Busca um usuário no banco de dados
     client.db("Cluster-Web").collection("usuarios").find(
       {db_login: req.body.login, db_senha: req.body.password }).toArray(function(err, items) {
         console.log(items);
@@ -79,6 +78,39 @@ app.post("/logar_usuario", function(req, res) {
         };
       });
  });
+
+ app.post("/atualizar_usuario", function(req, res) {
+    // Atualiza um usuário no banco de dados
+    client.db("Cluster-Web").collection("usuarios").updateOne(
+      {db_login: req.body.login_update, db_senha: req.body.current_password }, {$set: {db_senha: req.body.new_password}},
+      function(err, result){
+        console.log(result);
+        if (result.modifiedCount == 0) {
+          res.render('resposta_usuario', {resposta: "Usuário/senha não encontrado!"})
+        }else if (err) {
+          res.render('resposta_usuario', {resposta: "Erro ao logar usuário!"})
+        }else {
+          res.render('resposta_usuario', {resposta: "Usuário atualizado com sucesso!"})       
+        };
+      });
+ });
+
+ app.post("/remover_usuario", function(req, resp) {
+    // Remove do usuário
+    client.db("Cluster-Web").collection("usuarios").deleteOne(
+      { db_login: req.body.login_remove, db_senha: req.body.password_remove } , function (err, result) {
+        console.log(result);
+        if (result.deletedCount == 0) {
+          resp.render('resposta_usuario', {resposta: "Usuário/senha não encontrado!"})
+        }else if (err) {
+          resp.render('resposta_usuario', {resposta: "Erro ao remover usuário!"})
+        }else {
+          resp.render('resposta_usuario', {resposta: "Usuário removido com sucesso!"})       
+        };
+      });
+ });
+ 
+// ========================
 
 // Funções Att. 9 - Blog
 app.get('/blog', function (req, res){ // Redireciona para a página principal
