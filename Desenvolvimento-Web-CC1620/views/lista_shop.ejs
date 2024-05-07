@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../public/projetos/Dev. Web - Att 10 (Shop)/styleShop.css" rel="stylesheet">
+    <title>Cadastro</title>
+</head>
+<body>
+    <div id="resp">
+        <div><h1><%= resposta %></h1></div>
+
+        <% if (carros && carros.length > 0) { %>
+            <% for (let i = 0; i < carros.length; i++) { %>
+                <div id="carros">
+                    <h1><%= i+1 %>° carro</h1>
+                    <% if(carros[i].db_qtt == 0) { %>
+                        <h2>Carro esgotado!</h2>
+                    <% } %>
+
+                    <% if(carros[i].db_qtt > 0) { %>
+                        <%= carros[i].db_brand %>
+                        <%= carros[i].db_model %>
+                        <%= carros[i].db_year %>
+                        <%= carros[i].db_qtt %>
+                    <% } %>
+                </div>
+            <% } %>
+        <% } %>
+
+        <div class="redirect">
+            <a href="/page_login_shop">Encerrar sessão</a>
+            <a href="/gerenciar_carros">Gerenciar lista de carros</a>
+        </div>
+    </div>
+</body>
+</html>

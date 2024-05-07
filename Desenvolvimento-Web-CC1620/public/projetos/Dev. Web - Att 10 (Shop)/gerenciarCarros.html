@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styleShop.css">
+    <title>Gerenciamento de carros</title>
+</head>
+
+<body>
+    <div class="page">
+        <div class="fields">
+            <h2>Cadastrar novo carro</h2>
+            <form action="/cadastrar_carro_shop" method="GET">
+                <label>Marca: </label>
+                <input type="text" name="new_car_brand"></p>
+                <label>Modelo: </label>
+                <input type="text" name="new_car_model"></p>
+                <label>Ano: </label>
+                <input type="text" name="new_car_year"></p>
+                <label>Quantidade disponível: </label>
+                <input type="number" name="new_car_qtt"></p>
+
+                <input type="submit" value="Cadastrar novo carro">
+            </form>
+
+            <h2>Atualizar carro</h2>
+            <form action="/atualizar_carro_shop" method="GET">
+                <h2>Procurar pela marca, modelo e ano</h2>
+                <label>Marca: </label>
+                <input type="text" name="car_brand"></p>
+                <label>Modelo: </label>
+                <input type="text" name="car_model"></p>
+                <label>Ano: </label>
+                <input type="text" name="car_year"></p>
+
+                <label>Nova marca: </label>
+                <input type="text" name="upd_car_brand"></p>
+                <label>Novo modelo: </label>
+                <input type="text" name="upd_car_model"></p>
+                <label>Novo ano: </label>
+                <input type="text" name="upd_car_year"></p>
+                <label>Nova quantidade: </label>
+                <input type="number" name="upd_car_qtt"></p>
+
+                <input type="submit" value="Atualizar carro">
+            </form>
+
+            <h2>Remover carro</h2>
+            <form action="/remover_carro_shop" method="GET">
+                <label>Marca: </label>
+                <input type="text" name="rem_car_brand"></p>
+                <label>Modelo: </label>
+                <input type="text" name="rem_car_model"></p>
+                <label>Ano: </label>
+                <input type="text" name="rem_car_year"></p>
+
+                <input type="submit" value="Remover carro">
+            </form>
+        </div>
+
+        <div class="redirect">
+            <a href="loginShop.html">Página de login</a>
+        </div>
+    </div>
+</body>
+</html>

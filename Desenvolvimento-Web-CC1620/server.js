@@ -143,3 +143,92 @@ app.get('/post_criado', function (req, res){ // Redireciona para a página respo
     }
 })
 
+// ========================
+
+// Funções Att. 10 - Shop
+app.get('/page_login_shop', function(req, res){ // Redireciona para a página de login
+    app.use(express.static('./public/projetos/Dev. Web - Att 10 (Shop)'))
+    res.redirect('loginShop.html')
+    app.use(express.static('./public'))
+});
+
+app.get('/gerenciar_carros', function(req, res){ // Redireciona para a página de gerencimento de carros
+    app.use(express.static('./public/projetos/Dev. Web - Att 10 (Shop)'))
+    res.redirect('gerenciarCarros.html')
+    app.use(express.static('./public'))
+});
+
+app.post('/cadastrar_usuario_shop', function(req, res){ // Cadastra um novo usuário no DB
+    client.db("Cluster-Web").collection("users_shop").insertOne({
+        db_full_name: req.body.new_name_shop,
+        db_user: req.body.new_login_shop,
+        db_password: req.body.new_pass_shop 
+    }, function(err){
+        if(err){
+            res.render('cadastro_shop_resp', {resposta: "Erro ao cadastrar usuário! Por favor, tente novamente!"})
+        }else {
+            res.render('cadastro_shop_resp', {resposta: "Usuário cadastrado com sucesso!"})
+        }
+    })
+});
+
+app.post("/login_shop", function(req, res) { // Busca um usuário no DB
+    client.db("Cluster-Web").collection("users_shop").find(
+        {db_user: req.body.user_shop, db_password: req.body.pass_shop }).toArray(function(err, items) {
+            if (items.length == 0) {
+                res.render('erro_login_shop', {resposta: "Usuário/senha não encontrado!"})
+            }else if (err) {
+                res.render('erro_login_shop', {resposta: "Erro ao logar usuário!"})
+            }else {
+                client.db("Cluster-Web").collection("cars_shop").find().toArray(function(err, items) {
+                    res.render('lista_shop', { resposta: "Usuário logado com sucesso!", carros: items });
+                });
+            };
+        });
+    });
+    
+app.get('/cadastrar_carro_shop', function(req, res){ // Cadastra um carro no DB
+    client.db("Cluster-Web").collection("cars_shop").insertOne({
+        db_brand: req.query.new_car_brand,
+        db_model: req.query.new_car_model,
+        db_year: req.query.new_car_year,
+        db_qtt: req.query.new_car_qtt 
+    }, function(err){
+        if(err){
+            res.render('lista_shop', {resposta: "Erro ao cadastrar carro! Por favor, tente novamente!"})
+        }else {
+            client.db("Cluster-Web").collection("cars_shop").find().toArray(function(err, items) {
+                res.render('lista_shop', { resposta: "Carro cadastrado com sucesso!", carros: items });
+            });
+        }
+    })
+});
+
+app.get("/atualizar_carro_shop", function(req, res) { // Atualiza um carro no banco de dados
+    client.db("Cluster-Web").collection("cars_shop").updateOne({
+        db_brand: req.query.car_brand,
+        db_model: req.query.car_model,
+        db_year: req.query.car_year
+    }, {$set: {db_brand: req.query.upd_car_brand, db_model: req.query.upd_car_model, db_year: req.query.upd_car_year, db_qtt: req.query.upd_car_qtt}},
+      function(err, result){
+        if (result.modifiedCount != 0 && !err) {
+            client.db("Cluster-Web").collection("cars_shop").find().toArray(function(err, items) {
+                res.render('lista_shop', { resposta: "Carro atualizado com sucesso!", carros: items });
+            });     
+        };
+      });
+ });
+
+app.get("/remover_carro_shop", function(req, res) { // Remove um carro do banco de dados
+        client.db("Cluster-Web").collection("cars_shop").deleteOne({
+            db_brand: req.query.rem_car_brand,
+            db_model: req.query.rem_car_model,
+            db_year: req.query.rem_car_year
+        } , function (err, result) {
+            if (result.deletedCount != 0 && !err) {
+                client.db("Cluster-Web").collection("cars_shop").find().toArray(function(err, items) {
+                    res.render('lista_shop', { resposta: "Carro removido com sucesso!", carros: items });
+                });     
+            };
+        });
+    });
