@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="projetos/Dev. Web - Att 9 (Blog)/styleBlog.css" rel="stylesheet">
+        <link rel="stylesheet" href="projetos/WebDev-Att.09-(Blog)/styleBlog.css">
         <title>Blog</title>
     </head>
 
@@ -19,11 +19,16 @@
         <% if (posts && posts.length > 0) { %>
             <% for (let i = 0; i < posts.length; i++) { %>
                 <div id="posts">
-                    <h1><%= posts[i].db_title %></h1>
-                    <h3><%= posts[i].db_abs %></h3>
+                    <h1>Título: <%= posts[i].db_title %></h1>
+                    <h3>Resumo: <i><%= posts[i].db_abs %></i></h3>
                     <%= posts[i].db_cont %>
                 </div>
             <% } %>
         <% } %>
+        
+        <form action="/pagina_projects" method="get">
+            <button>Página de projetos</button>
+        </form>
+        </div>
     </body>
 </html>

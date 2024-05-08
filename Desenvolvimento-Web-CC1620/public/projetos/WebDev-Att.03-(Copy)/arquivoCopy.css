@@ -19,7 +19,7 @@ body{
 
 #cppLogo{
     position: absolute;
-    top: 20px;
+    top: 55px;
     left: 25px;
     width: 125px;
     height: 125px;
@@ -27,7 +27,7 @@ body{
 
 #javaLogo{
     position: absolute;
-    top: 20px;
+    top: 55px;
     right: 25px;
     width: 125px;
     height: 125px;
@@ -145,4 +145,20 @@ body{
     bottom: 20px;
     width: 90px;
     height: 125px;
+}
+
+#link{
+    text-align: center;
+    padding: 0 0 20px 0;
+}
+
+#link a{
+    text-decoration: none;
+    color: black;
+    background-color: whitesmoke;
+    padding: 10px;
+}
+
+#link:hover{
+    opacity: 0.5;
 }

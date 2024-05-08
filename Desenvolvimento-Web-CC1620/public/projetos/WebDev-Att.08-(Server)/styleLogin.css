@@ -26,3 +26,19 @@ body{
     padding: 15px;
     text-align: center;
 }
+
+#link{
+    text-align: center;
+    padding: 0 0 20px 0;
+}
+
+#link a{
+    text-decoration: none;
+    color: black;
+    background-color: whitesmoke;
+    padding: 10px;
+}
+
+#link:hover{
+    opacity: 0.5;
+}

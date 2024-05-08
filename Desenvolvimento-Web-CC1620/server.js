@@ -47,7 +47,6 @@ app.post("/login", function(req, res){
 })
 
 // CRUD com MongoDB
-
 app.post('/cadastrar_usuario', function(req, res) {
     // Salva os dados no DB
     client.db("Cluster-Web").collection("usuarios").insertOne(
@@ -121,10 +120,15 @@ app.get('/blog', function (req, res){ // Redireciona para a página principal
 })
 
 app.get('/criacao_post', function(req, res){ // Redireciona para a página de criação de posts
-    app.use(express.static('./public/projetos/Dev. Web - Att 9 (Blog)'))
+    app.use(express.static('./public/projetos/WebDev-Att.09-(Blog)'))
     res.redirect('criarPost.html')
     app.use(express.static('./public'))
 })
+
+app.get('/pagina_projects', function(req, res){ // Redireciona para a página de projetos
+    res.redirect('Project.html')
+})
+
 
 app.get('/post_criado', function (req, res){ // Redireciona para a página resposta
     // Salva posts no banco
@@ -146,14 +150,18 @@ app.get('/post_criado', function (req, res){ // Redireciona para a página respo
 // ========================
 
 // Funções Att. 10 - Shop
+/* Login para administrador:
+User: admin
+Password: admin */
+
 app.get('/page_login_shop', function(req, res){ // Redireciona para a página de login
-    app.use(express.static('./public/projetos/Dev. Web - Att 10 (Shop)'))
+    app.use(express.static('./public/projetos/WebDev-Att.10-(Shop)'))
     res.redirect('loginShop.html')
     app.use(express.static('./public'))
 });
 
 app.get('/gerenciar_carros', function(req, res){ // Redireciona para a página de gerencimento de carros
-    app.use(express.static('./public/projetos/Dev. Web - Att 10 (Shop)'))
+    app.use(express.static('./public/projetos/WebDev-Att.10-(Shop)'))
     res.redirect('gerenciarCarros.html')
     app.use(express.static('./public'))
 });
@@ -172,20 +180,25 @@ app.post('/cadastrar_usuario_shop', function(req, res){ // Cadastra um novo usu�
     })
 });
 
-app.post("/login_shop", function(req, res) { // Busca um usuário no DB
+var info_user = {};
+app.post("/login_shop", function(req, res) { // Busca um usuário no DB e redireciona para a listagem de carros
     client.db("Cluster-Web").collection("users_shop").find(
-        {db_user: req.body.user_shop, db_password: req.body.pass_shop }).toArray(function(err, items) {
-            if (items.length == 0) {
+        {db_user: req.body.user_shop, db_password: req.body.pass_shop }).toArray(function(err, info) {
+            info_user = info;
+            if (info_user.length == 0) {
                 res.render('erro_login_shop', {resposta: "Usuário/senha não encontrado!"})
             }else if (err) {
                 res.render('erro_login_shop', {resposta: "Erro ao logar usuário!"})
             }else {
-                client.db("Cluster-Web").collection("cars_shop").find().toArray(function(err, items) {
-                    res.render('lista_shop', { resposta: "Usuário logado com sucesso!", carros: items });
-                });
+                    admin = 0;
+                    if(info_user[0].db_user == 'admin' && info_user[0].db_password == 'admin')
+                        admin = 1;
+                    client.db("Cluster-Web").collection("cars_shop").find().toArray(function(err, info_car) {
+                        res.render('lista_shop', { resposta: "Usuário logado com sucesso!", carros: info_car, user_info: info_user, admin});
+                    });
             };
         });
-    });
+ });
     
 app.get('/cadastrar_carro_shop', function(req, res){ // Cadastra um carro no DB
     client.db("Cluster-Web").collection("cars_shop").insertOne({
@@ -198,7 +211,7 @@ app.get('/cadastrar_carro_shop', function(req, res){ // Cadastra um carro no DB
             res.render('lista_shop', {resposta: "Erro ao cadastrar carro! Por favor, tente novamente!"})
         }else {
             client.db("Cluster-Web").collection("cars_shop").find().toArray(function(err, items) {
-                res.render('lista_shop', { resposta: "Carro cadastrado com sucesso!", carros: items });
+                res.render('lista_shop', { resposta: "Carro cadastrado com sucesso!", carros: items, user_info: info_user });
             });
         }
     })
@@ -213,7 +226,7 @@ app.get("/atualizar_carro_shop", function(req, res) { // Atualiza um carro no ba
       function(err, result){
         if (result.modifiedCount != 0 && !err) {
             client.db("Cluster-Web").collection("cars_shop").find().toArray(function(err, items) {
-                res.render('lista_shop', { resposta: "Carro atualizado com sucesso!", carros: items });
+                res.render('lista_shop', { resposta: "Carro atualizado com sucesso!", carros: items, user_info: info_user });
             });     
         };
       });
@@ -227,8 +240,26 @@ app.get("/remover_carro_shop", function(req, res) { // Remove um carro do banco 
         } , function (err, result) {
             if (result.deletedCount != 0 && !err) {
                 client.db("Cluster-Web").collection("cars_shop").find().toArray(function(err, items) {
-                    res.render('lista_shop', { resposta: "Carro removido com sucesso!", carros: items });
+                    res.render('lista_shop', { resposta: "Carro removido com sucesso!", carros: items, user_info: info_user });
                 });     
             };
         });
-    });
+});
+
+app.get("/venda_carro", function(req, res) { // Atualiza a quantidade de um carro no banco de dados
+    var procura = {
+        db_brand: req.query.car_brand,
+        db_model: req.query.car_model,
+        db_year: req.query.car_year
+    };
+    client.db("Cluster-Web").collection("cars_shop").findOne(procura, function(err, car) {
+        let newQtt = car.db_qtt - 1;
+        client.db("Cluster-Web").collection("cars_shop").updateOne(procura, {$set: {db_qtt: newQtt}}, function(err, result){
+            if (result.modifiedCount != 0 && !err) {
+                client.db("Cluster-Web").collection("cars_shop").find().toArray(function(err, items) {
+                    res.render('lista_shop', { resposta: "Carro comprado com sucesso!", carros: items, user_info: info_user });
+                });     
+            };
+        });
+      });
+ });
